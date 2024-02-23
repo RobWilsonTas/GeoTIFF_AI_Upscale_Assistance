@@ -8,3 +8,5 @@ ___________________________
 
 
 I find this handy for upscaling Sentinel imagery from 10m to 2.5m pixels, so that it is a bit nicer to look at
+
+Any issues let me know
