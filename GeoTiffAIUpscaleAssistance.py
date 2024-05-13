@@ -8,26 +8,25 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from datetime import datetime
 startTime = time.time()
 
-
 """
 ##########################################################
 User options
 """
 
-
 #Variable assignment
-inImage                 = 'D:/Temp/Little50k.tif'        #E.g 'C:/ImageEnhance/AerialImagery.tif'
-approxPixelsPerTile     = 1800                          #E.g 2750, this is based on the maximum input resolution of the AI upscaler
-rootProcessDirectory    = 'D:/Temp/'                    #E.g 'C:/Temp/'
+inImage                 = 'D:/Temp/YourImage.tif'        #E.g 'C:/ImageEnhance/AerialImagery.tif'
+approxPixelsPerTile     = 2750                          #E.g 2750, this is based on the maximum input resolution of the AI upscaler
 
 #Options for compressing the images, ZSTD has the best speed but LZW is the most compatible
 compressOptions         = 'COMPRESS=ZSTD|NUM_THREADS=ALL_CPUS|PREDICTOR=1|ZSTD_LEVEL=1|BIGTIFF=IF_SAFER|TILED=YES'
-
 
 """
 ##########################################################
 Variable assignment for processing
 """
+
+#Get the location of the initial image for storage of processing files
+rootProcessDirectory = str(Path(inImage).parent.absolute()).replace('\\','/') + '/'
 
 #Set up the layer name for the raster calculations
 inImageName = inImage.split("/")
@@ -85,7 +84,6 @@ pixelSizeX = ras.rasterUnitsPerPixelX()
 pixelSizeY = ras.rasterUnitsPerPixelY()
 pixelSizeAve = (pixelSizeX + pixelSizeY) / 2
 coordinateSystem = ras.crs().authid()
-
 
 
 #Ask the user if they need to split up the raster, this isn't required if they have already run this section
