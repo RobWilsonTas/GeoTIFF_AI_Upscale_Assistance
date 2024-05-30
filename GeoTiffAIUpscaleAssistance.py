@@ -67,7 +67,7 @@ if not os.path.exists(aiOutputRefClipDirectory1):       os.mkdir(aiOutputRefClip
 if not os.path.exists(aiOutputRefClipDirectory2):       os.mkdir(aiOutputRefClipDirectory2)
 if not os.path.exists(aiOutputRefClipDirectory3):       os.mkdir(aiOutputRefClipDirectory3)
 if not os.path.exists(aiOutputRefClipDirectory4):       os.mkdir(aiOutputRefClipDirectory4)
-if not os.path.exists(stagingImageDir):                  os.mkdir(stagingImageDir)
+if not os.path.exists(stagingImageDir):                 os.mkdir(stagingImageDir)
 if not os.path.exists(finalImageDir):                   os.mkdir(finalImageDir)
 
 
