@@ -3,6 +3,7 @@ import subprocess
 import os
 import glob
 import time
+from pathlib import Path
 from qgis.core import QgsRasterLayer
 from qgis.PyQt.QtWidgets import QMessageBox
 from datetime import datetime
@@ -14,7 +15,7 @@ User options
 """
 
 #Variable assignment
-inImage                 = 'D:/Temp/YourImage.tif'        #E.g 'C:/ImageEnhance/AerialImagery.tif'
+inImage                 = 'C:/YourImage.tif'            #E.g 'C:/ImageEnhance/AerialImagery.tif'
 approxPixelsPerTile     = 2750                          #E.g 2750, this is based on the maximum input resolution of the AI upscaler
 
 #Options for compressing the images, ZSTD has the best speed but LZW is the most compatible
@@ -54,24 +55,20 @@ stagingImageDir                 = processDirectoryInstance + '8StagingImages/'
 finalImageDir                   = processDirectoryInstance + '9Final/'
 
 #Creating all the subfolders
-try:
-    os.mkdir(processDirectoryInstance)
-    os.mkdir(processDirectory)
-    os.mkdir(processBoundsDirectory)
-    os.mkdir(processBoundsSmallerDirectory)
-    os.mkdir(processTileDirectory)
-    os.mkdir(aiOutputReffedDirectory)
-    os.mkdir(aiOutputDirectory)
-    os.mkdir(aiOutputRefClipDirectoryRoot)
-    os.mkdir(aiOutputRefClipDirectory1)
-    os.mkdir(aiOutputRefClipDirectory2)
-    os.mkdir(aiOutputRefClipDirectory3)
-    os.mkdir(aiOutputRefClipDirectory4)
-    os.mkdir(stagingImageDir)
-    os.mkdir(finalImageDir)
-except BaseException as e:
-    print ('Couldnt make the directory because... ')
-    print(e)
+if not os.path.exists(processDirectoryInstance):        os.mkdir(processDirectoryInstance)
+if not os.path.exists(processDirectory):                os.mkdir(processDirectory)
+if not os.path.exists(processBoundsDirectory):          os.mkdir(processBoundsDirectory)
+if not os.path.exists(processBoundsSmallerDirectory):   os.mkdir(processBoundsSmallerDirectory)
+if not os.path.exists(processTileDirectory):            os.mkdir(processTileDirectory)
+if not os.path.exists(aiOutputReffedDirectory):         os.mkdir(aiOutputReffedDirectory)
+if not os.path.exists(aiOutputDirectory):               os.mkdir(aiOutputDirectory)
+if not os.path.exists(aiOutputRefClipDirectoryRoot):    os.mkdir(aiOutputRefClipDirectoryRoot)
+if not os.path.exists(aiOutputRefClipDirectory1):       os.mkdir(aiOutputRefClipDirectory1)
+if not os.path.exists(aiOutputRefClipDirectory2):       os.mkdir(aiOutputRefClipDirectory2)
+if not os.path.exists(aiOutputRefClipDirectory3):       os.mkdir(aiOutputRefClipDirectory3)
+if not os.path.exists(aiOutputRefClipDirectory4):       os.mkdir(aiOutputRefClipDirectory4)
+if not os.path.exists(stagingImageDir):                  os.mkdir(stagingImageDir)
+if not os.path.exists(finalImageDir):                   os.mkdir(finalImageDir)
 
 
 """
