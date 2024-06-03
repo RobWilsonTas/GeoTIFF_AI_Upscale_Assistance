@@ -1,8 +1,4 @@
-import numpy
-import subprocess
-import os
-import glob
-import time
+import numpy, subprocess, os, glob, time
 from pathlib import Path
 from qgis.core import QgsRasterLayer
 from qgis.PyQt.QtWidgets import QMessageBox
@@ -15,8 +11,8 @@ User options
 """
 
 #Variable assignment
-inImage                 = 'C:/YourImage.tif'            #E.g 'C:/ImageEnhance/AerialImagery.tif'
-approxPixelsPerTile     = 2750                          #E.g 2750, this is based on the maximum input resolution of the AI upscaler
+inImage                 = 'C:/YourImage.tif'        #E.g 'C:/ImageEnhance/AerialImagery.tif'
+approxPixelsPerTile     = 2750                      #E.g 2750, this is based on the maximum input resolution of the AI upscaler
 
 #Options for compressing the images, ZSTD has the best speed but LZW is the most compatible
 compressOptions         = 'COMPRESS=ZSTD|NUM_THREADS=ALL_CPUS|PREDICTOR=1|ZSTD_LEVEL=1|BIGTIFF=IF_SAFER|TILED=YES'
@@ -245,7 +241,7 @@ Georef the results from the AI
 """
 
 #If the images have been upscaled through the AI program, we can run the next section
-promptReply = QMessageBox.question(iface.mainWindow(), 'Are we ready to ref the AI tiles?', 'Have the tiles in ' + processTileDirectory + ' been put through the AI program?\n\nAre we ready for the AI output to be reffed?', QMessageBox.Yes, QMessageBox.No)
+promptReply = QMessageBox.question(iface.mainWindow(), 'Put the tiles through the AI upscaler', 'Now take the tiles that are located in ' + processTileDirectory + ' and put them through the AI program.\n\nEnsure that the names of the upscaled versions remain the same. Then place them under ' + aiOutputDirectory + '\n\nOnce complete click Yes.\n\nAre we ready to continue?', QMessageBox.Yes, QMessageBox.No)
 if promptReply == QMessageBox.Yes:
 
     reffedFiles = glob.glob(aiOutputReffedDirectory + '*')
@@ -472,6 +468,7 @@ if promptReply == QMessageBox.Yes:
 
     """
     #######################################################################
+    Joining the tiles into 4 separate mosaics to allow multiprocessing
     """
 
     gdalOptionsSpeed = '-co COMPRESS=ZSTD -co PREDICTOR=1 -co NUM_THREADS=ALL_CPUS -co BIGTIFF=IF_SAFER -co TILED=YES -multi --config GDAL_NUM_THREADS ALL_CPUS -wo NUM_THREADS=ALL_CPUS -overwrite'
@@ -520,23 +517,21 @@ if promptReply == QMessageBox.Yes:
 
     """
     #######################################################################
+    Wait for the tasks to finish
     """
 
     try:
         cmdTask1.waitForFinished(timeout = 20000000)
     except BaseException as e:
         print(e)
-            
     try:
         cmdTask2.waitForFinished(timeout = 20000000)
     except BaseException as e:
         print(e)
-
     try:
         cmdTask3.waitForFinished(timeout = 20000000)
     except BaseException as e:
         print(e)
-        
     try:
         cmdTask4.waitForFinished(timeout = 20000000)
     except BaseException as e:
@@ -544,6 +539,7 @@ if promptReply == QMessageBox.Yes:
 
     """
     #######################################################################
+    Finally bring it all together into a final mosaic
     """
 
     #Final task
